@@ -1,0 +1,261 @@
+<style type="text/css">
+
+table
+{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead
+{
+  display: block;
+  width: 100%;
+  overflow: auto;
+  color: #fff;
+  background: #000;
+}
+
+tbody
+{
+  display: block;
+  width: 100%;
+  height: 200px;
+  background: white;
+  overflow: auto;
+}
+
+th,td
+{
+  padding: .5em 1em;
+  text-align: left;
+  vertical-align: top;
+  border-left: 1px solid #fff;
+}
+    
+</style>    <!-- Begin page content -->
+
+<br>
+<div class="container">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Key</th>
+        <th>Color</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+  <tbody>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="bg-info text-white text-nowrap">LightBlue</td>
+    <td>Infomation derived from Campaign Activity</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="bg-primary text-white text-nowrap">Blue</td>
+    <td>Facebook Data dervided from the Facebook Snapshot</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="bg-success text-white text-nowrap">Green</td>
+    <td>FacebookSpend = (LinkCPC * Clicks) | Left to Spend  = (AW_Budget - FacebookSpend)| QuantityRequested - FB_Impressions = Impressions Remaining</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="bg-warning text-white text-nowrap">Orange</td>
+    <td>Has No Facebook Activty, Either is scheduled for a future date or the scheduled date has past and campaign never began</td>
+  </tr>
+  </tbody>
+</table>
+</div>
+
+
+<div class="container">
+    <button id="exportButton" class="btn btn-lg btn-danger clearfix"><span class="fa fa-file-excel-o"></span> Export to Excel</button>
+
+        <!-- Code Starts -->
+<table id="exportTable" class="table table-bordered table-hover table-striped table-sm" style="margin-top:10px;">
+        <thead class="header">
+                <tr>
+                  <th onclick="sortTable(0)" style="padding-right:5px">Agency_Name</th>
+                  <th onclick="sortTable(1)" style="padding-right:8px">Campagin_Id</th>
+                  <th onclick="sortTable(2)" style="padding-right:232px">Internal_Activity_Id</th>
+                  <th onclick="sortTable(3)" style="padding-right:120px">Campaign_Name</th>
+                  <th onclick="sortTable(4)" style="padding-right:7px">Start_Date</th>
+                  <th onclick="sortTable(5)" style="padding-right:17px">End_Date</th>
+                  <th onclick="sortTable(6)" style="padding-right:8px">NumberOfDays</th>
+                  <th onclick="sortTable(7)" style="padding-right:19px">Calculated_Impressions_Requested</th>
+                  <th onclick="sortTable(8)" style="padding-right:21px">Clicks_Requested</th>
+                  <th onclick="sortTable(9)" style="padding-right:0px">Calculated_AW_Budget</th>
+                  <th onclick="sortTable(10)" style="padding-right:13px">Impression_Spend</th>
+                  <th onclick="sortTable(11)" style="padding-right:13px">Click_Spend</th>
+                  <th onclick="sortTable(12)" style="padding-right:72px">FB_Impressions</th>
+                  <th onclick="sortTable(13)" style="padding-right:54px">FB_Reach</th>
+                  <th onclick="sortTable(14)" style="padding-right:38px">FB_Clicks</th>
+                  <th onclick="sortTable(15)" style="padding-right:47px">FB_CPM</th>
+                  <th onclick="sortTable(16)" style="padding-right:87px">FB_Link_CPC</th>
+                  <th onclick="sortTable(17)" style="padding-right:45px">Spend</th>
+                  <th onclick="sortTable(18)" style="padding-right:75px">FB_Frequency</th>
+                  <th onclick="sortTable(19)" style="padding-right:60px">FB_Remaining_Budget</th>
+                  <th onclick="sortTable(20)" style="padding-right:215px">DaysLeft</th>
+                  <th onclick="sortTable(21)" style="padding-right:91px">FB_Impressions_Remaining</th>
+                  <th onclick="sortTable(22)" style="padding-right:197px">PacePerDay</th>
+                  <th onclick="sortTable(23)" style="padding-right:128px">FB_Clicks_Remaining</th>
+                  <th onclick="sortTable(24)" style="padding-right:162px">ClickPacePerDay</th>
+                  <th onclick="sortTable(25)" style="padding-right:143px">AlertFlag</th>
+                  <th onclick="sortTable(26)" style="padding-right:316px">Headline</th>
+                  <th onclick="sortTable(27)" style="padding-right:324px">NewsFeedLinkDescription</th>
+                  <th onclick="sortTable(28)" style="padding-right:766px">Landing_Page</th>
+                  <th onclick="sortTable(29)" style="padding-right:808px">Data_File</th>
+                  <th onclick="sortTable(30)" style="padding-right:697px">Creative_Images</th>
+                  <th onclick="sortTable(31)" style="padding-right:40px">SnapshotTimeStamp</th>
+                </tr>
+              </thead>
+                <tbody>
+                <% @campaigns.each do |campaign| %>
+                  <% campaign.campaign_activities.each do |campaign_activity| %>
+                    <% if campaign_activity.facebook_report_snapshots.present? %>
+                      <% campaign_activity.facebook_report_snapshots.each do |facebook_report_snapshot| %>
+                         <tr>
+                           <td style="padding-right:60px" class="bg-info text-white text-nowrap"class="bg-info text-white text-nowrap"><%= campaign.agency.Name %></td>
+                           <td style="padding-right:71px" class="bg-info text-white text-nowrap"><%= campaign.CampaignId %></td>
+                           <td style="padding-right:71px" class="bg-info text-white text-nowrap"><%= campaign_activity.InternalActivityId %></td>
+                           <td class="bg-info text-white text-nowrap"><%= campaign_activity.FBText%></td>
+                           <td class="bg-info text-white text-nowrap"><%= campaign_activity.StartDate %></td>
+                           <td class="bg-info text-white text-nowrap"><%= campaign_activity.EndDate %></td>
+                           <td style="padding-right:107px" class="bg-info text-white text-nowrap"><%= campaign_activity.NumberOfDays %></td>
+                           <td style="padding-right:240px" class="bg-info text-white text-nowrap"><%= campaign_activity.Calculated_Impressions_Requested %></td>
+                           <td style="padding-right:123px" class="bg-info text-white text-nowrap"><%= campaign_activity.Clicks_Requested %></td>
+                           <td style="padding-right:125px" class="bg-info text-white text-nowrap"><%= campaign_activity.Calculated_AW_Budget %></td>
+                           <td style="padding-right:120px" class="bg-success text-white text-nowrap"><%= campaign_activity.Impression_Spend %></td>
+                           <td style="padding-right:65px" class="bg-info text-white text-nowrap"><%= campaign_activity.Click_Spend %></td>
+                           <td style="padding-right:135px" class="bg-primary text-white text-nowrap"><%= facebook_report_snapshot.Impressions  %></td>
+                           <td style="padding-right:80px" class="bg-primary text-white text-nowrap"><%= facebook_report_snapshot.Reach %></td>
+                           <td style="padding-right:80px" class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.Clicks %></td>
+                           <td class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.FB_CPM %></td>
+                           <td style="padding-right:108px" class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.LinkCPC %></td>
+                           <td style="padding-right:45px" class="bg-success text-white text-nowrap"><%= facebook_report_snapshot.Total_Aprox_Spend  %></td>
+                           <td style="padding-right:115px" class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.Frequency %></td>
+                           <td style="padding-right:120px" class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.Remaining_Budget %></td>
+                           <td style="padding-right:170px" class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.DaysLeft  %></td>
+                           <td style="padding-right:223px" class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.Impressions_Remaining  %></td>
+                           <td style="padding-right:170px" class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.PacePerDay  %></td>
+                           <td style="padding-right:170px" class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.FB_Clicks_Remaining  %></td>
+                           <td style="padding-right:170px" class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.ClickPacePerDay  %></td>
+                           <td class="bg-info text-white text-nowrap"><%= facebook_report_snapshot.AlertFlag %></td>
+                           <td class="bg-info text-white text-nowrap"><%= campaign_activity.Headline %></td>
+                           <td class="bg-info text-white text-nowrap"><%= campaign_activity.NewsFeedDescription %></td>
+                           <td class="bg-info text-white text-nowrap"><%= campaign_activity.LandingPageUrl %></td>
+                           <td class="bg-info text-white text-nowrap"><%= campaign_activity.DataFileUrl %></td>
+                           <td class="bg-info text-white text-nowrap"><%= campaign_activity.CreativeImagesUrl %></td>
+                           <td class="bg-primary text-white text-nowrap"><%= facebook_report_snapshot.TimeStamp %></td>
+                         </tr>
+                      <% end %> 
+                    <% else %>
+                      <tr>
+                           <td style="padding-right:60px" class="bg-warning text-white text-nowrap"><%= campaign.agency.Name %></td>
+                           <td style="padding-right:71px" class="bg-warning text-white text-nowrap"><%= campaign.CampaignId %></td>
+                           <td style="padding-right:71px" class="bg-warning text-white text-nowrap"><%= campaign_activity.InternalActivityId %></td>
+                           <td style="padding-right:10px" class="bg-warning text-white text-nowrap"><%= campaign_activity.FBText%></td>
+                           <td class="bg-warning text-white text-nowrap"><%= campaign_activity.StartDate %></td>
+                           <td class="bg-warning text-white text-nowrap"><%= campaign_activity.EndDate %></td>
+                           <td style="padding-right:107px" class="bg-warning text-white text-nowrap"><%= campaign_activity.NumberOfDays %></td>
+                           <td style="padding-right:240px" class="bg-warning text-white text-nowrap"><%= campaign_activity.Calculated_Impressions_Requested %></td>
+                           <td style="padding-right:120px" class="bg-warning text-white text-nowrap"><%= campaign_activity.Clicks_Requested %></td>
+                           <td style="padding-right:60px" class="bg-warning text-white text-nowrap"><%= campaign_activity.Calculated_AW_Budget %></td>
+                           <td style="padding-right:120px" class="bg-warning text-white text-nowrap"><%= campaign_activity.Impression_Spend %></td>
+                           <td style="padding-right:65px" class="bg-warning text-white text-nowrap"><%= campaign_activity.Click_Spend %></td>
+                           <td style="padding-right:135px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:80px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:80px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:108px" class="bg-warning text-white text-nowrap"></td>
+                           <td class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:45px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:115px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:223px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:170px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:170px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:120px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:120px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:120px" class="bg-warning text-white text-nowrap"></td>
+                           <td style="padding-right:120px" class="bg-warning text-white text-nowrap"></td>
+                           <td class="bg-warning text-white text-nowrap"><%= campaign_activity.Headline %></td>
+                           <td class="bg-warning text-white text-nowrap"><%= campaign_activity.NewsFeedDescription %></td>
+                           <td class="bg-warning text-white text-nowrap"><%= campaign_activity.LandingPageUrl %></td>
+                           <td class="bg-warning text-white text-nowrap"><%= campaign_activity.DataFileUrl %></td>
+                           <td class="bg-warning text-white text-nowrap"><%= campaign_activity.CreativeImagesUrl %></td>
+                           <td class="bg-warning text-white text-nowrap"></td>
+                         </tr>
+                       <% end %> 
+                  <% end %> 
+                <% end %> 
+                </tbody>
+            </table>
+          </div>
+
+
+
+<script>
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("exportTable");
+  switching = true;
+  //Set the sorting direction to ascending:
+  dir = "asc"; 
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.getElementsByTagName("TR");
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /*check if the two rows should switch place,
+      based on the direction, asc or desc:*/
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      //Each time a switch is done, increase this count by 1:
+      switchcount ++;      
+    } else {
+      /*If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again.*/
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script>
+
+
+
+
+        <!-- Code End -->
+
+
+

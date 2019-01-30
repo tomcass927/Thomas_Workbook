@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<title>AcquireViews</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  </head>
+  <body>
+
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				<a class="navbar-brand" href="/">AcquireViews</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="/querysearch" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								QuerySearch
+							</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="/secure/newly_added">NewlyAdded(30)</a>
+                                <a class="dropdown-item" href="/secure/allreports">AllReports(ALL)</a>
+                                <a class="dropdown-item" href="/secure/recentreports">RecentReports(100)</a>
+                                <a class="dropdown-item" href="/secure/startingtoday">CampaignsStartingToday</a>
+								<div class="dropdown-divider"></div>
+							</div>
+						</li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="/querysearch" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                HistoricalQuerySearch
+                            </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/secure/history?start=0&end=1000">AllCampaigns</a>
+                                <a class="dropdown-item" href="/secure/history?start=0&end=100">Last100Campaigns</a>
+                                <a class="dropdown-item" href="/secure/history?start=0&end=50">Last50Campaigns</a>
+                                <a class="dropdown-item" href="/secure/history?start=0&end=20">Last20Campaigns</a>
+                                <a class="dropdown-item" href="/secure/history?start=0&end=10">Last10Campaigns</a>
+                                <a class="dropdown-item" href="/secure/update_db">UpdateDatabaseHistory</a>
+                                <div class="dropdown-divider"></div>
+                            </div>
+                        </li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<%=username%>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="/login/form">Login</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="/logout">Logout</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<div>
+				<%if @error then %>
+						<div class="alert alert-error"><%=@error%></div>
+				<% end %>
+				<%= yield %>
+			</div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light/all.min.css" />
+	<script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
+	<script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/jszip.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $("#exportButton").click(function () {
+            // parse the HTML table element having an id=exportTable
+            var dataSource = shield.DataSource.create({
+                data: "#exportTable",
+                schema: {
+                    type: "table",
+                    fields: {
+                        Agency_Name: { type: String },
+                        Campagin_Id: { type: Number },
+                        Internal_Activity_Id: { type: String },
+                        Campaign_Name:  { type: String },
+                        Start_Date: { type: String },
+                        End_Date:   { type: String },
+                        NumberOfDays:   { type: Number },
+                        Calculated_Impressions_Requested: { type: Number },
+                        Clicks_Requested:   { type: Number },
+                        Calculated_AW_Budget:  { type: Number },
+                        Impression_Spend:   { type: Number },
+                        Click_Spend: { type: Number },
+                        FB_Impressions:{ type: Number },
+                        FB_Reach:{ type: Number },
+                        FB_Clicks:{ type: Number },
+                        FB_CPM:{ type: Number },
+                        FB_Link_CPC:{ type: Number },
+                        Spend:{ type: Number },
+                        FB_Frequency:{ type: Number },
+                        FB_Remaining_Budget:{ type: Number },
+                        DaysLeft:{ type: Number },
+                        FB_Impressions_Remaining:{ type: Number },
+                        PacePerDay:{ type: Number },
+                        FB_Clicks_Remaining:{ type: Number },
+                        ClickPacePerDay:{ type: Number },
+                        AlertFlag:   { type: String },
+                        Headline:   { type: String },
+                        NewsFeedLinkDescription:   { type: String },
+                        Landing_Page:   { type: String },
+                        Data_File:   { type: String },
+                        Creative_Images:   { type: String },
+                        SnapshotTimeStamp:{ type: String },
+                        HistoricSnapshotTimeStamp:{ type: String }  
+                    }
+                }
+            });
+
+
+
+ dataSource.read().then(function (data) {
+                new shield.exp.OOXMLWorkbook({
+                    author: "PrepBootstrap",
+                    worksheets: [
+                        {
+                            name: "PrepBootstrap Table",
+                            rows: [
+                                {
+                                    cells: [
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "Agency_Name"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "Campagin_Id"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "Internal_Activity_Id"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "Campaign_Name"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "Start_Date"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "End_Date"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "NumberOfDays"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "Calculated_Impressions_Requested"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "Clicks_Requested"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "Calculated_AW_Budget"
+                                        },
+ 									  {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "Impression_Spend"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "Click_Spend"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "FB_Impressions"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "FB_Reach"
+                                        },
+                                     {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "FB_Clicks"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "FB_CPM"
+                                        },
+                                     {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "FB_Link_CPC"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "Spend"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "FB_Frequency"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "FB_Remaining_Budget"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "DaysLeft"
+                                        },
+                                     {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "FB_Impressions_Remaining"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "PacePerDay"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "FB_Clicks_Remaining"
+                                        },
+                                      {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: Number,
+                                            value: "ClickPacePerDay"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "AlertFlag"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "Headline"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "NewsFeedLinkDescription"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "Landing_Page"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "Data_File"
+                                        },
+                                    {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "Creative_Images"
+                                        },
+                                     {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "SnapshotTimeStamp"
+                                        },
+                                         {
+                                            style: {
+                                                bold: true
+                                            },
+                                            type: String,
+                                            value: "HistoricSnapshotTimeStamp"
+                                        }
+                                    ]
+                                }
+                            ].concat($.map(data, function(item) {
+                          		return {
+                                    cells: [
+										{ type: String, value: item.Agency_Name },
+										{ type: Number, value: item.Campagin_Id },
+                                        { type: String, value: item.Internal_Activity_Id },
+										{ type: String, value: item.Campaign_Name },
+										{ type: String, value: item.Start_Date},
+										{ type: String, value: item.End_Date },
+                                        { type: Number, value: item.NumberOfDays },
+										{ type: Number, value: item.Calculated_Impressions_Requested},
+										{ type: Number, value: item.Clicks_Requested},
+										{ type: Number, value: item.Calculated_AW_Budget },
+										{ type: Number, value: item.Impression_Spend },
+										{ type: Number, value: item.Click_Spend },
+                                        { type: Number, value: item.FB_Impressions },
+                                        { type: Number, value: item.FB_Reach },
+                                        { type: Number, value: item.FB_Clicks },
+                                        { type: Number, value: item.FB_CPM },
+                                        { type: Number, value: item.FB_Link_CPC },
+                                        { type: Number, value: item.Spend},
+                                        { type: Number, value: item.FB_Frequency },
+                                        { type: Number, value: item.FB_Remaining_Budget},
+                                        { type: Number, value: item.DaysLeft},
+                                        { type: Number, value: item.FB_Impressions_Remaining},
+                                        { type: Number, value: item.PacePerDay},
+                                        { type: Number, value: item.FB_Clicks_Remaining},
+                                        { type: Number, value: item.ClickPacePerDay},
+                                        { type: String, value: item.AlertFlag},
+                                        { type: String, value: item.Headline },
+                                        { type: String, value: item.NewsFeedLinkDescription },
+                                        { type: String, value: item.Landing_Page },
+                                        { type: String, value: item.Data_File },
+                                        { type: String, value: item.Creative_Images},
+                                        { type: String, value: item.SnapshotTimeStamp},
+                                        { type: String, value: item.HistoricSnapshotTimeStamp}
+										 ]
+                                };
+                            }))
+                        }
+                    ]
+                   }).saveAs({
+                    fileName: "FB_Campaign_Data_Pull"
+                });
+            });
+        });
+    });
+</script>
+
+
+</script>
+  </body>
+</html>
+

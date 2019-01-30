@@ -1,0 +1,150 @@
+<style type="text/css">
+
+table
+{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead
+{
+  display: block;
+  width: 100%;
+  overflow: auto;
+  color: #fff;
+  background: #000;
+}
+
+tbody
+{
+  display: block;
+  width: 100%;
+  height: 200px;
+  background: white;
+  overflow: auto;
+}
+
+th,td
+{
+  padding: .5em 1em;
+  text-align: left;
+  vertical-align: top;
+  border-left: 1px solid #fff;
+}
+    
+</style>    <!-- Begin page content -->
+
+<br>
+<div class="container">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Key</th>
+        <th>Color</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+  <tbody>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="bg-info text-white text-nowrap">LightBlue</td>
+    <td>Infomation derived from Campaign Activity</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="bg-primary text-white text-nowrap">Blue</td>
+    <td>Facebook Data dervided from the Facebook Snapshot</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="bg-success text-white text-nowrap">Green</td>
+    <td>FacebookSpend = (LinkCPC * Clicks) | Left to Spend  = (AW_Budget - FacebookSpend)| QuantityRequested - FB_Impressions = Impressions Remaining</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="bg-warning text-white text-nowrap">Orange</td>
+    <td>Has No Facebook Activty, Either is scheduled for a future date or the scheduled date has past and campaign never began</td>
+  </tr>
+  </tbody>
+</table>
+</div>
+
+<div>
+  <table id="buxtonTable" class="table table-bordered table-hover table-striped table-sm" style="margin-top:10px;">
+          <thead class="header">
+                  <tr>
+                    <th onclick="sortTable(0)" style="padding-right:5px">Agency_Name</th>
+                  </tr>
+           </thead>
+           <tbody>
+             <tr>
+                <td style="padding-right:60px" class="bg-info text-white text-nowrap"><%= @query_tool %></td>
+             </tr>           
+          </tbody>
+  </table>
+</div>
+
+<script>
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("exportTable");
+  switching = true;
+  //Set the sorting direction to ascending:
+  dir = "asc"; 
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.getElementsByTagName("TR");
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /*check if the two rows should switch place,
+      based on the direction, asc or desc:*/
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      //Each time a switch is done, increase this count by 1:
+      switchcount ++;      
+    } else {
+      /*If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again.*/
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script>
+
+
+
+
+        <!-- Code End -->
+
+
+
