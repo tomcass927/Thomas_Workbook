@@ -16,6 +16,16 @@ Social_Campaign_Email_Comp_Helper.rb
   
   
  ALL OTHER FILES 
+ 
+ app.rb 
+ manifest.yml
+ README.md
+ Gemfile
+ Gemfile.lock
+ config.ru
+ DIR - models
+ DIR - views 
+ 
   => This is a basic Sinatra app that was used to compile statistics from multiples sources, stores them in a AWS DB, run various analytics against them, and present them in a front end application 
 
 
