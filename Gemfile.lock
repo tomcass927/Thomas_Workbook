@@ -20,7 +20,7 @@ GEM
     mustermann (1.0.1)
     mysql2 (0.4.9)
     mysql2 (0.4.9-x64-mingw32)
-    rack (2.0.3)
+    rack (2.2.3)
     rack-protection (2.0.0)
       rack
     sinatra (2.0.0)
